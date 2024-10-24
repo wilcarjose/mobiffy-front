@@ -12,10 +12,13 @@ const AppLayout = ({ children }) => {
     }
 
     return (
-        <div className="min-h-screen bg-gray-100">
-            <Navigation user={user} />
+        <div className="nc-CheckoutPage">
+            <main className="container py-16 pt-0 ">
+        
+                <Navigation user={user} />
 
-            <main>{children}</main>
+                {children}
+            </main>
         </div>
     )
 }
