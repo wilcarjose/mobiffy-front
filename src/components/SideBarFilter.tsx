@@ -10,22 +10,6 @@ import { MdSearch } from 'react-icons/md';
 import Heading from '@/shared/Heading/Heading';
 import Input from '@/shared/Input/Input';
 
-// DEMO DATA
-const brands = [
-  {
-    name: 'All',
-  },
-  {
-    name: 'Nike',
-  },
-  {
-    name: 'New Balance',
-  },
-  {
-    name: 'Rick Owens',
-  },
-];
-
 const gender = ['Men', 'Women', 'Unisex', 'Kids'];
 
 const locations = [
@@ -38,27 +22,34 @@ const locations = [
 
 const PRICE_RANGE = [1, 500];
 //
-const SidebarFilters = () => {
+const SidebarFilters = ({ categories, onCategoryChange }) => {
   const [rangePrices, setRangePrices] = useState([100, 500]);
-  const [activeBrand, setActiveBrand] = useState('All');
+  const [activeCategory, setActiveCategory] = useState<string | null>(null);
   const [activeGender, setActiveGender] = useState('Men');
   const [activeLocation, setActiveLocation] = useState('New York');
+  const [filteredProducts, setFilteredProducts] = useState([]);
+
+  const handleCategoryClick = (category) => {
+    setActiveCategory(category.slug);
+    onCategoryChange(category.slug);
+  };
 
   const renderTabsCategories = () => {
+    if(!categories) return <p>Cargando categorias...</p>
     return (
       <div className="relative flex flex-col space-y-4 pb-8">
-        <h3 className="mb-2.5 text-xl font-medium">Brands</h3>
+        <h3 className="mb-2.5 text-xl font-medium">Categories</h3>
         <div className="grid grid-cols-2 gap-4">
-          {brands.map((item) => (
+          {categories.map((category) => (
             <button
-              key={item.name}
+              key={category.slug}
               type="button"
-              onClick={() => setActiveBrand(item.name)}
+              onClick={() => handleCategoryClick(category)}
               className={`rounded-lg py-4 ${
-                activeBrand === item.name ? 'bg-primary text-white' : 'bg-gray'
+                activeCategory === category.slug ? 'bg-primary text-white' : 'bg-gray'
               }`}
             >
-              {item.name}
+              {category.title.en}
             </button>
           ))}
         </div>
