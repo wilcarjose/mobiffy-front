@@ -5,6 +5,7 @@ import 'rc-slider/assets/index.css';
 import { pathOr } from 'ramda';
 import Slider from 'rc-slider';
 import React, { useState } from 'react';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { MdSearch } from 'react-icons/md';
 
 import Heading from '@/shared/Heading/Heading';
@@ -24,18 +25,35 @@ const PRICE_RANGE = [1, 500];
 //
 const SidebarFilters = ({ categories, onCategoryChange }) => {
   const [rangePrices, setRangePrices] = useState([100, 500]);
-  const [activeCategory, setActiveCategory] = useState<string | null>(null);
   const [activeGender, setActiveGender] = useState('Men');
   const [activeLocation, setActiveLocation] = useState('New York');
   const [filteredProducts, setFilteredProducts] = useState([]);
 
+  const router = useRouter();
+  const searchParams = useSearchParams();
+  const [activeCategory, setActiveCategory] = useState(() => searchParams.get('category') || null);
+
+
   const handleCategoryClick = (category) => {
-    setActiveCategory(category.slug);
-    onCategoryChange(category.slug);
+    const slug = category.slug;
+    setActiveCategory(slug);
+
+    const params = new URLSearchParams(searchParams.toString());
+    if (slug) {
+      params.set('category', slug); // Actualiza o agrega el parámetro `category`
+    } else {
+      params.delete('category'); // Elimina el parámetro `category` si está vacío
+    }
+
+    // Actualiza la URL sin recargar la página
+    router.push(`?${params.toString()}`);
+
+    //onCategoryChange(category.slug);
   };
 
   const renderTabsCategories = () => {
-    if(!categories) return <p>Cargando categorias...</p>
+    if(!categories) return <p>Loading...</p>
+
     return (
       <div className="relative flex flex-col space-y-4 pb-8">
         <h3 className="mb-2.5 text-xl font-medium">Categories</h3>

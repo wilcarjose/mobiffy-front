@@ -10,19 +10,23 @@ export const useProducts = ({ category }) => {
         let url = '/api/products?';
 
         if (category) {
-            url += `category=${category}&`; // Agregar la categoría como parámetro
+            url += `category=${category}&`;
         }
 
-        // Itera sobre los parámetros de búsqueda de la URL
         searchParams.forEach((value, key) => {
             url += `${key}=${value}&`;
         });
-        // Elimina el último "&" si existen parámetros
-        return url.slice(0, -1); // Eliminar el último '&'
+
+        return url.slice(0, -1); // Delete last '&'
     };
 
-    const fetcher = (url) => axios.get(url).then(res => res.data.data); // Accede a res.data.data
-    const { data: products, error, isLoading } = useSWR(buildUrl, fetcher); // Usa buildUrl como key
+    const url = buildUrl();
 
-    return { products, isLoading, isError: error };
+    const fetcher = (url) => axios.get(url).then(res => res.data.data);
+
+    const { data: products, error } = useSWR(url || null, fetcher);
+
+    const isLoading = !products && !error;
+
+    return { products, isLoading, isError: !!error };
 };

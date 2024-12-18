@@ -19,11 +19,9 @@ export const useCategories = () => {
         }
     };
 
-    const { data: categories, error, isLoading } = useSWR('/api/categories', fetcher);
+    const { data: categories, error } = useSWR('/api/categories', fetcher);
 
-    console.log("Datos de categorías:", categories);
-    console.log("Estado de carga:", isLoading);
-    console.log("Error:", error);
+    const isLoading = !categories && !error;
 
-    return { categories, isLoading, isError: error };
+    return { categories, isLoading, isError: !!error };
 };
