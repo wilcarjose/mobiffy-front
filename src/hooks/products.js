@@ -7,14 +7,17 @@ export const useProducts = ({ category }) => {
     const searchParams = useSearchParams();
 
     const buildUrl = () => {
-        let url = '/api/products?';
+        let page = searchParams.get('page') || 1;
+        let url = `/api/products?page=${page}&`;
 
         if (category) {
             url += `category=${category}&`;
         }
 
         searchParams.forEach((value, key) => {
-            url += `${key}=${value}&`;
+            if (key !== 'page' && key !== 'category') {
+                url += `${key}=${value}&`;
+            }
         });
 
         return url.slice(0, -1); // Delete last '&'
@@ -22,11 +25,22 @@ export const useProducts = ({ category }) => {
 
     const url = buildUrl();
 
-    const fetcher = (url) => axios.get(url).then(res => res.data.data);
+    const fetcher = (url) => axios.get(url).then(res => res.data);
 
-    const { data: products, error } = useSWR(url || null, fetcher);
+    const { data, error } = useSWR(url || null, fetcher);
 
-    const isLoading = !products && !error;
+    const isLoading = !data && !error;
 
-    return { products, isLoading, isError: !!error };
+    return {
+        products: data?.data,
+        isLoading,
+        isError: !!error,
+        meta: {
+            current_page: data?.current_page,
+            last_page: data?.last_page,
+            from: data?.from,
+            to: data?.to,
+            total: data?.total
+        },
+    };
 };

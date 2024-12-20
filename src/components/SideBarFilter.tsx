@@ -33,6 +33,8 @@ const SidebarFilters = ({ categories, onCategoryChange }) => {
   const searchParams = useSearchParams();
   const [activeCategory, setActiveCategory] = useState(() => searchParams.get('category') || null);
 
+  const [page, setPage] = useState(1);
+
 
   const handleCategoryClick = (category) => {
     const slug = category.slug;
@@ -40,10 +42,14 @@ const SidebarFilters = ({ categories, onCategoryChange }) => {
 
     const params = new URLSearchParams(searchParams.toString());
     if (slug) {
-      params.set('category', slug); // Actualiza o agrega el parámetro `category`
+      params.set('category', slug);
     } else {
-      params.delete('category'); // Elimina el parámetro `category` si está vacío
+      params.delete('category');
     }
+
+    params.delete('page');
+
+    setPage(1);
 
     // Actualiza la URL sin recargar la página
     router.push(`?${params.toString()}`);
