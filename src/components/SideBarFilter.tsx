@@ -23,11 +23,10 @@ const locations = [
 
 const PRICE_RANGE = [1, 500];
 //
-const SidebarFilters = ({ categories, onCategoryChange }) => {
+const SidebarFilters = ({ categories, selectedCategory }) => {
   const [rangePrices, setRangePrices] = useState([100, 500]);
   const [activeGender, setActiveGender] = useState('Men');
   const [activeLocation, setActiveLocation] = useState('New York');
-  const [filteredProducts, setFilteredProducts] = useState([]);
 
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -39,22 +38,9 @@ const SidebarFilters = ({ categories, onCategoryChange }) => {
   const handleCategoryClick = (category) => {
     const slug = category.slug;
     setActiveCategory(slug);
-
-    const params = new URLSearchParams(searchParams.toString());
-    if (slug) {
-      params.set('category', slug);
-    } else {
-      params.delete('category');
-    }
-
-    params.delete('page');
-
     setPage(1);
 
-    // Actualiza la URL sin recargar la página
-    router.push(`?${params.toString()}`);
-
-    //onCategoryChange(category.slug);
+    router.push(`/category/${slug}`);
   };
 
   const renderTabsCategories = () => {
@@ -70,7 +56,7 @@ const SidebarFilters = ({ categories, onCategoryChange }) => {
               type="button"
               onClick={() => handleCategoryClick(category)}
               className={`rounded-lg py-4 ${
-                activeCategory === category.slug ? 'bg-primary text-white' : 'bg-gray'
+                  selectedCategory === category.slug ? 'bg-primary text-white' : 'bg-gray'
               }`}
             >
               {category.title.en}

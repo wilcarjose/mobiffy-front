@@ -1,9 +1,9 @@
-'use client'
+
 import useSWR from 'swr';
 import axios from '@/lib/axios';
 import { useSearchParams } from 'next/navigation';
 
-export const useProducts = ({ category }) => {
+export const useProducts = ({ category, initialData }) => {
     const searchParams = useSearchParams();
 
     const buildUrl = () => {
@@ -20,14 +20,14 @@ export const useProducts = ({ category }) => {
             }
         });
 
-        return url.slice(0, -1); // Delete last '&'
+        return url.slice(0, -1); // Eliminar último '&'
     };
 
     const url = buildUrl();
 
     const fetcher = (url) => axios.get(url).then(res => res.data);
 
-    const { data, error } = useSWR(url || null, fetcher);
+    const { data, error } = useSWR(url || null, fetcher, { initialData });
 
     const isLoading = !data && !error;
 

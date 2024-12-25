@@ -1,11 +1,21 @@
+// src/app/page.tsx
 import React from 'react';
-
 import ProductList from '@/components/ProductList';
+import { fetchProducts, fetchCategories } from '@/lib/api';
 
-const Home = () => {
-  return (
-    <ProductList />
-  );
-};
+export default async function Home({ searchParams }) {
+    const { search, page = 1 } = searchParams;
 
-export default Home;
+    // Obtén los datos de productos y categorías desde la API
+    const products = await fetchProducts({ search, page });
+    const categories = await fetchCategories();
+
+    return (
+        <ProductList
+            initialProducts={products}
+            categories={categories}
+            searchTerm={search}
+            currentPage={parseInt(page, 10)}
+        />
+    );
+}

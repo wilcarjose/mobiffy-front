@@ -29,22 +29,20 @@ const SearchInput = () => {
       params.set('page', 1);
       router.push(`?${params.toString()}`);
     }
-
-    router.push(`?${params.toString()}`);
   };
 
   return (
     <div className="flex flex-1 items-center gap-2 rounded-full border border-neutral-300 px-4">
         <MdSearch className="text-2xl text-neutral-500"/>
         <Input
-        type="text"
-        rounded="rounded-full"
-        placeholder="Search..."
-        sizeClass="h-12 px-0 py-3"
-        className="border-transparent bg-transparent placeholder:text-neutral-500 focus:border-transparent"
-        value={searchTerm}
-        onChange={(e) => setSearchTerm(e.target.value)}
-        onKeyDown={handleKeyDown}
+            type="text"
+            rounded="rounded-full"
+            placeholder="Search..."
+            sizeClass="h-12 px-0 py-3"
+            className="border-transparent bg-transparent placeholder:text-neutral-500 focus:border-transparent"
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            onKeyDown={handleKeyDown}
         />
     </div>
   );
