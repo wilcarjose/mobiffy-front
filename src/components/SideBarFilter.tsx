@@ -44,13 +44,14 @@ const SidebarFilters = ({ categories, selectedCategory }) => {
   };
 
   const renderTabsCategories = () => {
-    if(!categories) return <p>Loading...</p>
-
-    return (
+    return !categories ? (
+      <p>Loading...</p>
+    ) : (
       <div className="relative flex flex-col space-y-4 pb-8">
         <h3 className="mb-2.5 text-xl font-medium">Categories</h3>
-        <div className="grid grid-cols-2 gap-4">
+        <div>
           {categories.map((category) => (
+            <div key={category.slug} className="grid grid-cols-1 my-1">
             <button
               key={category.slug}
               type="button"
@@ -61,6 +62,23 @@ const SidebarFilters = ({ categories, selectedCategory }) => {
             >
               {category.title.en}
             </button>
+            {category.children.length > 0 && (selectedCategory === category.slug || category.childSlugs.includes(selectedCategory)) && (
+              <div className="grid grid-cols-2 gap-2 mt-2">
+                {category.children.map((child) => (
+                  <button
+                    key={child.slug}
+                    type="button"
+                    onClick={() => handleCategoryClick(child)}
+                    className={`rounded-lg py-4 border ${
+                        selectedCategory === child.slug ? 'bg-primary text-white' : 'bg-red'
+                    }`}
+                  >
+                    {child.title.en}
+                  </button>
+                ))}
+              </div>
+              )}
+          </div>
           ))}
         </div>
       </div>
