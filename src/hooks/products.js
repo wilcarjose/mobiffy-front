@@ -33,6 +33,8 @@ export const useProducts = ({ category, initialData }) => {
 
     return {
         products: data?.data,
+        brands: data?.brands,
+        categories: data?.categories,
         isLoading,
         isError: !!error,
         meta: {

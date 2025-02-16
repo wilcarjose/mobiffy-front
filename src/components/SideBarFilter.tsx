@@ -4,7 +4,7 @@ import 'rc-slider/assets/index.css';
 
 import { pathOr } from 'ramda';
 import Slider from 'rc-slider';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { MdSearch } from 'react-icons/md';
 
@@ -23,53 +23,118 @@ const locations = [
 
 const PRICE_RANGE = [1, 500];
 //
-const SidebarFilters = ({ categories, selectedCategory }) => {
+const SidebarFilters = ({ aggregations, selectedCategory, selectedBrand }) => {
   const [rangePrices, setRangePrices] = useState([100, 500]);
-  const [activeGender, setActiveGender] = useState('Men');
   const [activeLocation, setActiveLocation] = useState('New York');
 
   const router = useRouter();
   const searchParams = useSearchParams();
-  const [activeCategory, setActiveCategory] = useState(() => searchParams.get('category') || null);
+  const brandParam = searchParams.get('brand');
+  const categoryParam = searchParams.get('category');
+  const [activeSpecs, setActiveSpecs] = useState({});
+  const [activeCategory, setActiveCategory] = useState(() => categoryParam || null);
+  const [activeBrand, setActiveBrand] = useState(() => brandParam || null);
+  const [currentPath, setCurrentPath] = useState('');
 
   const [page, setPage] = useState(1);
 
+  selectedBrand = brandParam ? brandParam : 'all';
+  selectedCategory = selectedCategory ? selectedCategory : 'all';
+
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      setCurrentPath(window.location.pathname + window.location.search);
+    }
+  }, []);
 
   const handleCategoryClick = (category) => {
     const slug = category.slug;
     setActiveCategory(slug);
     setPage(1);
 
-    router.push(`/category/${slug}`);
+    const currentParams = new URLSearchParams(searchParams.toString());
+
+    if (slug === 'all') {
+      // Eliminar la categoría de la URL y conservar el parámetro 'brand' si existe
+      currentParams.delete('category');
+      const newUrl = currentParams.toString() ? `/?${currentParams.toString()}` : '/';
+      router.push(newUrl);
+    } else {
+      // Agregar la nueva categoría a la URL y conservar el parámetro 'brand' si existe
+      const basePath = `/category/${slug}`;
+      const newUrl = currentParams.toString() ? `${basePath}?${currentParams.toString()}` : basePath;
+      router.push(newUrl);
+    }
   };
 
-  const renderTabsCategories = () => {
-    return !categories ? (
-      <p>Loading...</p>
+  const handleBrandClick = (brand) => {
+    const slug = brand.slug;
+    setActiveBrand(slug);
+    setPage(1);
+
+    const currentParams = new URLSearchParams(searchParams.toString());
+    if (slug === 'all') {
+      currentParams.delete('brand');
+    } else {
+      currentParams.set('brand', slug);
+    }
+
+    currentParams.delete('page');
+
+    if (currentPath) {
+      router.push(`${currentPath.split('?')[0]}?${currentParams.toString()}`);
+    } else {
+      console.error('Unable to determine the current path');
+    }
+  };
+
+  const handleSpecClick = (specName, specValue) => {
+    setActiveSpecs((prevSpecs) => ({
+      ...prevSpecs,
+      [specName]: specValue,
+    }));
+
+    const currentParams = new URLSearchParams(searchParams.toString());
+    const specsParams = new URLSearchParams();
+
+    Object.entries({ ...activeSpecs, [specName]: specValue }).forEach(([key, value]) => {
+      specsParams.append(`specs`, `${key}:${value}`);
+    });
+
+    if (currentPath) {
+      router.push(`${currentPath.split('?')[0]}?${currentParams.toString()}&${specsParams.toString()}`);
+    } else {
+      console.error('Unable to determine the current path');
+    }
+  };
+
+  const renderTabsCategoriesMain = () => {
+    return !aggregations.categories || aggregations.categories.length === 0 ? (
+      ''
     ) : (
       <div className="relative flex flex-col space-y-4 pb-8">
         <h3 className="mb-2.5 text-xl font-medium">Categories</h3>
         <div>
-          {categories.map((category) => (
+          {aggregations.categories.map((category) => (
             <div key={category.slug} className="grid grid-cols-1 my-1">
             <button
               key={category.slug}
               type="button"
               onClick={() => handleCategoryClick(category)}
-              className={`rounded-lg py-4 ${
+              className={`rounded-lg py-2 ${
                   selectedCategory === category.slug ? 'bg-primary text-white' : 'bg-gray'
               }`}
             >
               {category.title.en}
             </button>
             {category.children.length > 0 && (selectedCategory === category.slug || category.childSlugs.includes(selectedCategory)) && (
-              <div className="grid grid-cols-2 gap-2 mt-2">
+              <div className="grid grid-cols-2 gap-2 mt-2 ml-3">
                 {category.children.map((child) => (
                   <button
                     key={child.slug}
                     type="button"
                     onClick={() => handleCategoryClick(child)}
-                    className={`rounded-lg py-4 border ${
+                    className={`rounded-lg py-1 border border-red-300 ${
                         selectedCategory === child.slug ? 'bg-primary text-white' : 'bg-red'
                     }`}
                   >
@@ -85,25 +150,104 @@ const SidebarFilters = ({ categories, selectedCategory }) => {
     );
   };
 
-  // OK
-  const renderTabsGender = () => {
-    return (
+  const renderTabsCategories = () => {
+    return !aggregations.categories || aggregations.categories.length === 0 ? (
+      ''
+    ) : (
       <div className="relative flex flex-col space-y-4 py-8">
-        <h3 className="mb-2.5 text-xl font-medium">Gender</h3>
+        <h3 className="mb-2.5 text-xl font-medium">Categories</h3>
         <div className="grid grid-cols-2 gap-4">
-          {gender.map((item) => (
+          <button
+            key="all"
+            type="button"
+            onClick={() => handleCategoryClick({ slug: 'all' })}
+            className={`rounded-lg py-1 border border-red-300 ${
+              selectedCategory === 'all' ? 'bg-primary text-white' : 'bg-gray'
+            }`}
+          >
+            All
+          </button>
+          {aggregations.categories.map((item) => (
             <button
-              key={item}
+              key={item.slug}
               type="button"
-              onClick={() => setActiveGender(item)}
-              className={`rounded-lg py-4 ${
-                activeGender === item ? 'bg-primary text-white' : 'bg-gray'
+              onClick={() => handleCategoryClick(item)}
+              className={`rounded-lg py-1 border border-red-300 ${
+                selectedCategory === item.slug ? 'bg-primary text-white' : 'bg-gray'
               }`}
             >
-              {item}
+              <p>
+                {item.title.en} <span className="text-sm text-neutral-400">({item.count})</span>
+              </p>
             </button>
           ))}
         </div>
+      </div>
+    );
+  };
+  const renderTabsBrands = () => {
+    return !aggregations.brands || aggregations.brands.length === 0 ? (
+      ''
+    ) : (
+      <div className="relative flex flex-col space-y-4 py-8">
+        <h3 className="mb-2.5 text-xl font-medium">Brands</h3>
+        <div className="grid grid-cols-2 gap-4">
+          <button
+            key="all"
+            type="button"
+            onClick={() => handleBrandClick({ slug: 'all' })}
+            className={`rounded-lg py-1 border border-red-300 ${
+              selectedBrand === 'all' ? 'bg-primary text-white' : 'bg-gray'
+            }`}
+          >
+            All
+          </button>
+          {aggregations.brands.map((item) => (
+            <button
+              key={item.slug}
+              type="button"
+              onClick={() => handleBrandClick(item)}
+              className={`rounded-lg py-1 border border-red-300 ${
+                selectedBrand === item.slug ? 'bg-primary text-white' : 'bg-gray'
+              }`}
+            >
+              <p>
+              {item.name} <span className="text-sm text-neutral-400">({item.count})</span>
+              </p>
+            </button>
+          ))}
+        </div>
+      </div>
+    );
+  };
+
+  const renderTabsSpecs = () => {
+    return !aggregations.specs || aggregations.specs.length === 0 ? (
+      ''
+    ) : (
+      <div className="relative flex flex-col space-y-4 py-8">
+        <h3 className="mb-2.5 text-xl font-medium">Specifications</h3>
+        {aggregations.specs.map((spec) => (
+          <div key={spec.name} className="space-y-2">
+            <h4 className="font-semibold">{spec.name}</h4>
+            <div className="grid grid-cols-2 gap-4">
+              {spec.values.map((value) => (
+                <button
+                  key={value.value}
+                  type="button"
+                  onClick={() => handleSpecClick(spec.name, value.value)}
+                  className={`rounded-lg py-1 border border-red-300 ${
+                    activeSpecs[spec.name] === value.value ? 'bg-primary text-white' : 'bg-gray'
+                  }`}
+                >
+                  <p>
+                    {value.value} {value.uom} <span className="text-sm text-neutral-400">({value.count})</span>
+                  </p>
+                </button>
+              ))}
+            </div>
+          </div>
+        ))}
       </div>
     );
   };
@@ -206,7 +350,8 @@ const SidebarFilters = ({ categories, selectedCategory }) => {
       <Heading className="mb-0">Filter products</Heading>
       <div className="divide-y divide-neutral-300">
         {renderTabsCategories()}
-        {renderTabsGender()}
+        {renderTabsBrands()}
+        {renderTabsSpecs()}
         {renderTabsPriceRage()}
         {renderTabsLocation()}
       </div>

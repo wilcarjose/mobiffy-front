@@ -1,19 +1,18 @@
 'use client'
-import React, { useState } from 'react';
-
+import React from 'react';
 import ProductCard from '@/components/ProductCard';
+import LoadingGrid from '@/components/LoadingGrid';
 
 function ProductGrid({ products, isLoading, isError }) {
 
   if (isLoading) {
-    return <div>Loading...</div>;
+    return <LoadingGrid />;
   }
 
   if (isError) {
     return <div>Failed to load products</div>;
   }
 
-  // Asegúrate de verificar que `products` sea un array válido
   if (!products || products.length === 0) {
     return <div>No products found.</div>;
   }

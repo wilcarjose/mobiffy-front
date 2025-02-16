@@ -1,24 +1,28 @@
-// src/app/category/[categorySlug]/page.tsx
 import React from 'react';
 import ProductList from '@/components/ProductList';
-import { fetchProducts, fetchCategories } from '@/lib/api';
+import { fetchProducts } from '@/lib/api';
 
-// Esta función obtiene los datos del servidor en el momento de la solicitud
 export default async function CategoryPage({ params, searchParams }) {
-    const { categorySlug } = params;
-    const { search, page = 1 } = searchParams;
+  const { categorySlug } = params;
+  const { brand, search, specs, page = 1 } = searchParams;
 
-    // Obtén los datos de productos y categorías desde la API
-    const products = await fetchProducts({ category: categorySlug, search, page });
-    const categories = await fetchCategories();
+  const { products, aggregations, meta } = await fetchProducts({
+    category: categorySlug,
+    brand: brand,
+    search,
+    specs,
+    page
+  });
 
-    return (
-        <ProductList
-            initialProducts={products}
-            categories={categories}
-            selectedCategory={categorySlug}
-            searchTerm={search}
-            currentPage={parseInt(page, 10)}
-        />
-    );
+  return (
+    <ProductList
+      initialProducts={products}
+      aggregations={aggregations}
+      meta={meta}
+      selectedCategory={categorySlug}
+      selectedBrand={brand}
+      searchTerm={search}
+      currentPage={parseInt(page, 10)}
+    />
+  );
 }
