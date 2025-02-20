@@ -2,7 +2,7 @@
 
 import React from 'react';
 
-import ButtonPrimary from '@/shared/Button/ButtonPrimary';
+import ButtonPrimary from '@/components/ui/commons/Button/ButtonPrimary';
 
 import { useAuth } from '@/hooks/auth'
 import { useState } from 'react'

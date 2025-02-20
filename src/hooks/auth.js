@@ -1,5 +1,5 @@
 import useSWR from 'swr'
-import axios from '@/lib/axios'
+import axios from '@/lib/utils/axios'
 import { useEffect } from 'react'
 import { useParams, useRouter } from 'next/navigation'
 

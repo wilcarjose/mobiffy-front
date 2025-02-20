@@ -1,6 +1,6 @@
 
 import useSWR from 'swr';
-import axios from '@/lib/axios';
+import axios from '@/lib/utils/axios';
 import { useSearchParams } from 'next/navigation';
 
 export const useProducts = ({ category, initialData }) => {

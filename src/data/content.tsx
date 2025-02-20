@@ -38,23 +38,23 @@ import redlow from '@/images/redlow.webp';
 export const topNavLinks: NavItemType[] = [
   {
     id: 'ee46t',
+    name: 'Mobiffy',
+    href: '/',
+  },
+  {
+    id: 'eerrrt',
     name: 'Home',
     href: '/home',
   },
   {
-    id: 'eerrrt',
-    name: 'Blog',
-    href: '/blog',
-  },
-  {
     id: 'eexct',
-    name: 'Collections',
-    href: '/products',
+    name: 'Products',
+    href: '/es/products',
   },
   {
     id: 'h6ii8g',
-    name: 'Contact',
-    href: '/contact',
+    name: 'Tablets',
+    href: '/es/category/tablets',
   },
   {
     id: 'h678ty',

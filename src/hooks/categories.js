@@ -1,6 +1,6 @@
 'use client';
 import useSWR from 'swr';
-import axios from '@/lib/axios';
+import axios from '@/lib/utils/axios';
 
 export const useCategories = () => {
     console.log("useCategories hook ejecutándose");

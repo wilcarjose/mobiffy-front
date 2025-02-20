@@ -1,7 +1,7 @@
 import React from 'react';
 
-import ButtonPrimary from '@/shared/Button/ButtonPrimary';
-import ButtonSecondary from '@/shared/Button/ButtonSecondary';
+import ButtonPrimary from '@/components/ui/commons/Button/ButtonPrimary';
+import ButtonSecondary from '@/components/ui/commons/Button/ButtonSecondary';
 
 const Page404 = () => {
   return (

@@ -4,16 +4,16 @@ import Link from 'next/link';
 import React from 'react';
 import { FaGoogle } from 'react-icons/fa6';
 
-import ButtonPrimary from '@/shared/Button/ButtonPrimary';
-import ButtonSecondary from '@/shared/Button/ButtonSecondary';
-import FormItem from '@/shared/FormItem';
-import Input from '@/shared/Input/Input';
-import InputError from '@/components/InputError'
+import ButtonPrimary from '@/components/ui/commons/Button/ButtonPrimary';
+import ButtonSecondary from '@/components/ui/commons/Button/ButtonSecondary';
+import FormItem from '@/components/ui/commons/FormItem';
+import Input from '@/components/ui/commons/Input/Input';
+import InputError from '@/components/ui/commons/InputError'
 
 import { useAuth } from '@/hooks/auth'
 import { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
-import AuthSessionStatus from '@/app/(auth)/AuthSessionStatus'
+import AuthSessionStatus from '@/components/auth/AuthSessionStatus'
 
 const Register = () => {
 

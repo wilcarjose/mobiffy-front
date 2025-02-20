@@ -5,8 +5,8 @@ import '@/styles/global.css';
 import type { Metadata } from 'next';
 import React, { Suspense } from 'react';
 
-import Header from '@/components/Header/Header';
-import Footer from '@/shared/Footer/Footer';
+import Header from '@/components/ui/header/Header';
+import Footer from '@/components/ui/commons/Footer/Footer';
 
 import Loading from './loading';
 
