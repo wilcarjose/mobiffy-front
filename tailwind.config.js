@@ -14,15 +14,17 @@ module.exports = {
         '6xl': '4rem',
         },
         extend: {
-        colors: {
-            primary: '#fd5545',
-            secondary: '#000000',
-            gray: '#eeeeee',
-            'gray-darker': '#e0e0e0',
-            'gray-100': '#f8f8f8',
-            'gray-dark': '#c3c3c3',
-            'gray-light': '#f5f5f5',
-        },
+            colors: {
+                primary: '#fd5545',
+                'primary-50': '#f0f9ff',
+                'primary-600': '#2563eb',
+                secondary: '#000000',
+                gray: '#eeeeee',
+                'gray-darker': '#e0e0e0',
+                'gray-100': '#f8f8f8',
+                'gray-dark': '#c3c3c3',
+                'gray-light': '#f5f5f5',
+            },
         },
     },
     plugins: [require('@tailwindcss/forms')], // eslint-disable-line

@@ -1,3 +1,4 @@
+// src/components/ui/SideBarFilter.tsx
 'use client';
 
 import 'rc-slider/assets/index.css';

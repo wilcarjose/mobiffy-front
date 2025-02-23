@@ -1,4 +1,4 @@
-// src/components/ProductPage.js
+// src/components/ProductPage.tsx
 'use client';
 
 import React, { useState, useEffect } from 'react';

@@ -1,3 +1,4 @@
+// src/app/layout.tsx
 import { Nunito } from 'next/font/google'
 
 import '@/styles/global.css';
@@ -7,6 +8,7 @@ import React, { Suspense } from 'react';
 
 import Header from '@/components/ui/header/Header';
 import Footer from '@/components/ui/commons/Footer/Footer';
+import ReactQueryProvider from '@/providers/ReactQueryProvider';
 
 import Loading from './loading';
 
@@ -41,16 +43,22 @@ export const metadata: Metadata = {
     ],
   };
 
-const RootLayout = ({ children }) => {
-    return (
-        <html lang="en" className={nunitoFont.className}>
-            <body className="">
-                <Header />
-                <Suspense fallback={<Loading />}>{children}</Suspense>
-                <Footer />
-            </body>
-        </html>
-    )
+export default function RootLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
+  return (
+    <html lang="es" className={nunitoFont.className}>
+      <body className="">
+        <Header />
+        <Suspense fallback={<Loading />}>
+          <ReactQueryProvider>
+            {children}
+          </ReactQueryProvider>
+        </Suspense>
+        <Footer />
+      </body>
+    </html>
+  );
 }
-
-export default RootLayout

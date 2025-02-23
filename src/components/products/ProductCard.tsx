@@ -1,59 +1,44 @@
+// src/components/ProductCard.tsx
 import Image from 'next/image';
-import Link from 'next/link';
-import React from 'react';
-
 import { Product } from '@/types/product';
-
-import LikeButton from '../ui/LikeButton';
 
 interface ProductCardProps {
   product: Product;
 }
 
 const ProductCard = ({ product }: ProductCardProps) => (
-    <div
-      className={`transitionEffect relative rounded-2xl p-3 shadow-md`}
-    >
-      <div className="h-[250px] w-full overflow-hidden rounded-2xl lg:h-[220px] 2xl:h-[300px]">
-        {false && (
-          <div className="absolute left-6 top-0 rounded-b-lg bg-primary px-3 py-2 text-sm uppercase text-white shadow-md">
-            Just In!
-          </div>
-        )}
-        <LikeButton className="absolute right-2 top-2" />
-        <Link
-          className="h-[250px] w-full lg:h-[220px]"
-          href={`/es/products/${product.slug}`}
-        >
-          <Image
-            src={product.image.url}
-            alt={`${product.name} cover photo`}
-            width={product.image.width}
-            height={product.image.height}
-            className="h-full w-full object-contain object-bottom"
-          />
-        </Link>
-      </div>
-      <div className="mt-3">
-        <div className="flex items-center justify-between">
-          <h3 className="font-semibold">{product.name}</h3>
-          <p
-            className={`text-neutral-500 ${
-              false ? 'block' : 'hidden'
-            } text-sm line-through`}
-          >
-            ${product.previousPrice}
-          </p>
-        </div>
-
-        <div className="flex items-center justify-between">
-          <p className="text-sm text-neutral-500">{product.shoeCategory}</p>
-          <p className="text-lg font-medium text-primary">
-            ${product.currentPrice}100
-          </p>
+  <article
+    className={`product-card transitionEffect relative rounded-2xl p-3 shadow-md`}
+  >
+    <div className="product-image-container h-[250px] w-full overflow-hidden rounded-2xl lg:h-[220px] 2xl:h-[300px]">
+      <Image
+        src={product.image.url}
+        alt={`${product.name}`}
+        width={product.image.width}
+        height={product.image.height}
+        className="product-image h-full w-full object-contain object-bottom"
+        sizes="(max-width: 640px) 100vw, 300px"
+        priority={false}
+      />
+    </div>
+    <div className="product-details mt-3">
+      <div className="product-title flex items-center justify-between">
+        <h3 className="product-title font-semibold">{product.name}</h3>
+        <div className="price-container {`text-neutral-500 ${
+            false ? 'block' : 'hidden'
+          } text-sm line-through`}">
+          {product.previousPrice && (
+            <span className="previous-price">
+              ${product.previousPrice}
+            </span>
+          )}
+          <span className="current-price">
+            ${product.currentPrice}
+          </span>
         </div>
       </div>
     </div>
+  </article>
 );
 
 export default ProductCard;

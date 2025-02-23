@@ -1,34 +1,26 @@
-'use client'
-import React from 'react';
+// src/components/ProductList.tsx
 import { Product } from '@/types/product';
-import ProductCard from '@/components/products/ProductCard';
-//import LoadingGrid from '@/components/products/LoadingGrid';
+import ProductCard from './ProductCard';
+import LoadingGrid from './LoadingGrid';
 
 interface ProductListProps {
   products: Product[];
+  isLoading?: boolean;
 }
 
-const ProductList = ({ products /*, isLoading, isError*/ }: ProductListProps) => {
-
-  // if (isLoading) {
-  //   return <LoadingGrid />;
-  // }
-
-  // if (isError) {
-  //   return <div>Failed to load products</div>;
-  // }
-
-  if (!products || products.length === 0) {
-    return <div>No products found.</div>;
-  }
-
-  return (
-    <div className="grid flex-1 gap-x-8 gap-y-10 sm:grid-cols-2 xl:grid-cols-3">
-      {products.map((product) => (
-        <ProductCard showPrevPrice product={product} key={product.slug} />
-      ))}
-    </div>
-  );
-}
+const ProductList = ({ products , isLoading }: ProductListProps) => (
+  <div className="product-grid grid flex-1 gap-x-8 gap-y-10 sm:grid-cols-2 xl:grid-cols-3">
+    {isLoading ? (
+      <LoadingGrid />
+    ) : (
+      products.map((product) => (
+        <ProductCard 
+          key={product.slug} 
+          product={product}
+        />
+      ))
+    )}
+  </div>
+)
 
 export default ProductList;
