@@ -1,6 +1,6 @@
 // src/app/(site)/[lang]/products/page.tsx
 import { Metadata } from 'next';
-import { fetchProducts, fetchCategories } from '@/lib/api/products';
+import { fetchProducts } from '@/lib/api/products';
 import ProductListingPage from '@/components/products/ProductListingPage';
 import { ProductFilters } from '../../../../types/product';
 

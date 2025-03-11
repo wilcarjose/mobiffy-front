@@ -1,15 +1,13 @@
 // types/product.ts
 
-import ProductImage from '@/types/product-image';
-import ProductSpec from '@/types/product-spec';
+import { ProductImage } from '@/types/product-image';
+import { ProductSpec } from '@/types/product-spec';
 
 export interface Product {
   id: string;
   name: string;
   slug: string;
-  price: number;
-  currentPrice: number;
-  previousPrice?: number;
+  brand: Brand;
   image: ProductImage;
   specs: ProductSpec[];
 }
@@ -18,8 +16,8 @@ export interface ProductFilters {
   search?: string;
   page?: number;
   category?: string;
-  brand?: string;
-  // ... otros filtros
+  brands?: string;
+  specs?: string;
 }
 
 export interface ProductsResponse {
@@ -41,8 +39,9 @@ export interface ProductsResponse {
 
 interface Brand {
   name: string;
-  slug: string;
+  key: string;
   count: number;
+  selected: boolean;
 }
 
 interface Category {
@@ -57,7 +56,9 @@ interface Specification {
 }
 
 interface SpecificationValue {
-  value: string;
+  key: string;
+  name: string;
   count: number;
+  selected: boolean;
   uom?: string;
 }

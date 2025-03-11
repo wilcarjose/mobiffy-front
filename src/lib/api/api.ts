@@ -9,7 +9,7 @@ export const fetchProducts = async ({
   page = 1
 }) => {
 
-  let url = `/api/products?page=${page}`;
+  let url = `/api/ve/products?page=${page}`;
 
   if (category !== null) {
     url += `&category=${category}`;

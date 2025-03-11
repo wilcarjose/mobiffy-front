@@ -12,8 +12,6 @@ import { MdSearch } from 'react-icons/md';
 import Heading from '@/components/ui/commons/Heading/Heading';
 import Input from '@/components/ui/commons/Input/Input';
 
-const gender = ['Men', 'Women', 'Unisex', 'Kids'];
-
 const locations = [
   'New York',
   'Canada',
@@ -178,7 +176,7 @@ const SidebarFilters = ({ aggregations, selectedCategory, selectedBrand }) => {
               }`}
             >
               <p>
-                {item.title.en} <span className="text-sm text-neutral-400">({item.count})</span>
+                {item.title} <span className="text-sm text-neutral-400">({item.count})</span>
               </p>
             </button>
           ))}
@@ -232,17 +230,29 @@ const SidebarFilters = ({ aggregations, selectedCategory, selectedBrand }) => {
           <div key={spec.name} className="space-y-2">
             <h4 className="font-semibold">{spec.name}</h4>
             <div className="grid grid-cols-2 gap-4">
+              <button
+                key={'all'}
+                type="button"
+                onClick={() => handleSpecClick(spec.key, 'all')}
+                className={`rounded-lg py-1 border border-red-300 ${
+                  activeSpecs[spec.name] === 'all' ? 'bg-primary text-white' : 'bg-gray'
+                }`}
+              >
+                <p>
+                  All
+                </p>
+              </button>
               {spec.values.map((value) => (
                 <button
                   key={value.value}
                   type="button"
-                  onClick={() => handleSpecClick(spec.name, value.value)}
+                  onClick={() => handleSpecClick(spec.key, value.val)}
                   className={`rounded-lg py-1 border border-red-300 ${
                     activeSpecs[spec.name] === value.value ? 'bg-primary text-white' : 'bg-gray'
                   }`}
                 >
                   <p>
-                    {value.value} {value.uom} <span className="text-sm text-neutral-400">({value.count})</span>
+                    {value.value}{spec.uom} <span className="text-sm text-neutral-400">({value.count})</span>
                   </p>
                 </button>
               ))}

@@ -1,31 +1,42 @@
 // lib/api/products.ts
 import { ProductFilters, ProductsResponse } from "../../types/product";
-import axios from 'axios'; 
+import axios from '@/lib/utils/axios';
 
 export const fetchProducts = async (
   filters: ProductFilters
 ): Promise<ProductsResponse> => {
-  //console.log('Fetching with filters:', filters);
+
   try {
-    const response = await axios.get('/api/products', {
-      params: {
-        page: filters.page || 1,
-        search: filters.search,
-        category: filters.category,
-        brand: filters.brand,
-        // ... otros parámetros
-      },
+
+    const validatedFilters = {
+      page: Number(filters.page) || 1,
+      search: filters.search || '',
+      category: filters.category || '',
+      brands: filters.brands?.split(',') || [],
+      specs: filters.specs?.split(',') || []
+    };
+
+    const response = await axios.get('/api/ve/products', {
+      params: validatedFilters
     });
-    //console.log('API Response:', response.data.meta);
     
     return {
-      products: response.data.data, // Accedemos a data.data
-      meta: response.data.meta,
-      aggregations: response.data.aggregations
+      products: response.data.data || [],
+      meta: response.data.meta || {
+        current_page: 1,
+        total: 0,
+        per_page: 30,
+        last_page: 1,
+      },
+      aggregations: response.data.aggregations || {
+        brands: [],
+        categories: [],
+        specs: [],
+      }
     };
 
   } catch (error) {
-    console.error('API Error:', error);
+    console.error('Error detallado:', error.response?.data || error.message);
     throw new Error('Error fetching products');
   }
 };
