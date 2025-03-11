@@ -117,7 +117,7 @@ const Filters = ({ aggregations }) => {
   })) || [];
 
   return (
-    <div className="top-28 lg:sticky">
+    <div className="top-28 lg">
       <Heading className="mb-0">Filter products</Heading>
       <div className="divide-y divide-neutral-300">
         <ChecklistFilter

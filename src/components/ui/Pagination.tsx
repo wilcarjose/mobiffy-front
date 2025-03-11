@@ -4,7 +4,7 @@
 import React, { useState } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 
-const Pagination = ({ meta }) => {
+const Pagination = ({ meta, className }) => {
   const router = useRouter();
   const searchParams = useSearchParams();
 
@@ -23,7 +23,7 @@ const Pagination = ({ meta }) => {
   };
 
   return (
-    <div className="pagination-controls">
+    <div className={`pagination-controls ${className}`}>
 
       <div className="flex items-center justify-between border-t border-gray-200 bg-white px-4 py-3 sm:px-6">
         <div className="flex flex-1 justify-between sm:hidden">
