@@ -76,7 +76,9 @@ const ChecklistFilter = ({
           onClick={toggleExpand}
           className="mt-2 text-sm text-blue-600 hover:underline"
         >
-          {isExpanded ? (<span className='rounded-lg border border-red-300 text-xs text-primary px-2'>See less</span>) : (<span className='rounded-lg border border-red-300 text-xs text-primary px-2'>See more</span>)}
+          {isExpanded
+            ? (<span className='rounded-lg border border-red-300 text-xs text-primary px-2'>See less</span>)
+            : (<span className='rounded-lg border border-red-300 text-xs text-primary px-2'>See all</span>)}
         </button>
       )}
     </div>
