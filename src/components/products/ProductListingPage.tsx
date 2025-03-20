@@ -79,11 +79,8 @@ const ProductListingPage = ({
             <div className="flex items-center gap-5">
               <ButtonSecondary
                 onClick={toggleFiltersModal}
-                className="flex items-center gap-1 bg-gray">
+                className="flex items-center gap-1 bg-gray lg:hidden">
                 Filters
-              </ButtonSecondary>
-              <ButtonSecondary className="flex items-center gap-2 bg-gray">
-                Most popular
               </ButtonSecondary>
             </div>
           </div>
