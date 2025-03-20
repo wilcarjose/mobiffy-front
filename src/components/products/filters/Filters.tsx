@@ -14,7 +14,6 @@ const Filters = ({ aggregations }) => {
   const isMounted = useRef(false);
 
   const handleCategoryClick = (slug) => {
-  //  setPage(1);
 
     const currentParams = new URLSearchParams(searchParams.toString());
 
@@ -27,6 +26,8 @@ const Filters = ({ aggregations }) => {
       const newUrl = currentParams.toString() ? `${basePath}?${currentParams.toString()}` : basePath;
       router.push(newUrl);
     }
+
+    currentParams.delete('page');
   };
 
   const handleBrandClick = (brandKey: string) => {
@@ -43,12 +44,12 @@ const Filters = ({ aggregations }) => {
       newParams.delete('brands');
     }
 
+    newParams.delete('page');
+
     const replacedParams = `?${newParams.toString()}`
       .replace(/%3A/g, ':')
       .replace(/%2C/g, ',')
       .replace(/%7C/g, '|');
-
-      console.log('replacedParams', replacedParams)
 
     router.replace(replacedParams);
   };
@@ -92,6 +93,8 @@ const Filters = ({ aggregations }) => {
     } else {
       newParams.delete('specs');
     }
+
+    newParams.delete('page');
 
     const replacedParams = `?${newParams.toString()}`
       .replace(/%3A/g, ':')
