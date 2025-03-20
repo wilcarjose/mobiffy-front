@@ -40,62 +40,10 @@ const MainNav = ({ user = null  }) => {
       </div>
 
       <div className="flex flex-1 items-center justify-end gap-5">
-        <div className="relative hidden lg:block">
-          <span className="absolute -top-1/4 left-3/4 aspect-square w-3 rounded-full bg-red-600" />
-          <FaRegBell className="text-2xl" />
-        </div>
 
         <div className="flex items-center divide-x divide-neutral-300">
           <div className="flex items-center gap-2 pl-5">
-            {user ? (
-              <>
-              <ButtonCircle3 className="overflow-hidden bg-gray" size="w-10 h-10">
-                <Image
-                  src={avatar}
-                  alt="avatar"
-                  className="h-full w-full object-cover object-center"
-                />
-              </ButtonCircle3>
             
-                <div className="hidden sm:flex sm:items-center sm:ml-6">
-                  <Dropdown
-                      align="right"
-                      width="48"
-                      trigger={
-                          <button className="flex items-center text-sm font-medium text-gray-500 hover:text-gray-700 focus:outline-none transition duration-150 ease-in-out">
-                              <div>{user?.name}</div>
-
-                              <div className="ml-1">
-                                  <svg
-                                      className="fill-current h-4 w-4"
-                                      xmlns="http://www.w3.org/2000/svg"
-                                      viewBox="0 0 20 20">
-                                      <path
-                                          fillRule="evenodd"
-                                          d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
-                                          clipRule="evenodd"
-                                      />
-                                  </svg>
-                              </div>
-                          </button>
-                      }>
-                      {/* Authentication */}
-                      <DropdownButton onClick={logout}>
-                          Logout
-                      </DropdownButton>
-                  </Dropdown>
-                </div>
-              </>
-            ) : (
-              <div className="flex items-center gap-3">
-                <Link href="/login" className="text-sm font-medium text-gray-700 hover:text-blue-600">
-                  Login
-                </Link>
-                <Link href="/register" className="text-sm font-medium text-gray-700 hover:text-blue-600">
-                  Register
-                </Link>
-              </div>
-            )}
           </div>
         </div>
       </div>

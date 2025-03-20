@@ -74,7 +74,7 @@ const ProductListingPage = ({
         
         <div className="lg:col-span-3">
 
-          <div className="top-32 z-10 mb-3 items-center gap-5 space-y-5 bg-white py-10 lg:sticky lg:flex lg:space-y-0">
+          <div className="top-32 z-10 mb-3 items-center gap-5 space-y-5 bg-white py-10 lg:flex lg:space-y-0">
             <SearchInput />
             <div className="flex items-center gap-5">
               <ButtonSecondary
